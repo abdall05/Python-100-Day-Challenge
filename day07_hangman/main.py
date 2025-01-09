@@ -6,7 +6,6 @@ print(logo)
 
 LIVES = len(hangman)
 random_word = random.choice(word_list)
-print(random_word)
 constructed_word = ['_'] * len(random_word)
 won = False
 current_hangman_index = 0
