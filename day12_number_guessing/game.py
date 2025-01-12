@@ -1,15 +1,20 @@
 import random
 
+LOWER_BOUND = 1
+UPPER_BOUND = 100
+EASY_LEVEL_ATTEMPTS = 5
+HARD_LEVEL_ATTEMPTS = 10
+
 
 def generate_random_number():
-    return random.randint(1, 100)
+    return random.randint(LOWER_BOUND, UPPER_BOUND)
 
 
 def number_of_attempts():
-    attempts = 10
+    attempts = HARD_LEVEL_ATTEMPTS
     difficulty = input("Choose your difficulty level (low or high): ").lower()
     if difficulty == "high":
-        attempts = 5
+        attempts = EASY_LEVEL_ATTEMPTS
     return attempts
 
 
