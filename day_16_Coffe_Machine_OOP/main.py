@@ -1,4 +1,4 @@
-from menu import Menu, MenuItem
+from menu import Menu
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
@@ -13,8 +13,9 @@ while is_on:
         is_on = False
     elif client_choice == "report":
         coffee_maker.report()
+        money_machine.report()
     elif menu.find_drink(client_choice):
-        order = menu.get_item(client_choice)
+        order = menu.find_drink(client_choice)
         if coffee_maker.is_resource_sufficient(order):
             payment_succeeded = money_machine.make_payment(order.cost)
             if payment_succeeded:
