@@ -21,7 +21,7 @@ while game_running:
     time.sleep(0.1)
     snake.forward()
 
-    if snake.bite_it_self() or utils.hit_screen(snake, game_screen):
+    if snake.bite_itself() or utils.hit_screen(snake, game_screen):
         game_running = False
         scoreboard.game_over()
 

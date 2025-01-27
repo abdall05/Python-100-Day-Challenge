@@ -17,7 +17,7 @@ class Snake:
         self.body.append(tail)
         self.just_grow = True
 
-    def bite_it_self(self):
+    def bite_itself(self):
         for segment in self.body[1:]:
             if self.head.distance(segment) < utils.SQUARE_SIZE/2:
                 return True
