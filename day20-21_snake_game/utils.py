@@ -1,8 +1,8 @@
 from turtle import Turtle
 from random import randint
+from scoreboard import SCORE_OFFSET
 
 SQUARE_SIZE = 20
-SCORE_OFFSET = 50
 
 
 def create_square():

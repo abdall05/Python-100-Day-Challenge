@@ -22,8 +22,8 @@ while game_running:
     snake.forward()
 
     if snake.bite_itself() or utils.hit_screen(snake, game_screen):
-        game_running = False
-        scoreboard.game_over()
+        scoreboard.reset()
+        snake.reset()
 
     if utils.found_food(snake, food):
         scoreboard.increase_score()

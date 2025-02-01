@@ -91,6 +91,7 @@ class CarManager:
     def clear_cars(self):
         """Remove all car objects and prepare for a new level."""
         for row in self.cars:
-            for car in self.cars[row]:
+            for car in row:
                 car.hideturtle()
+            row.clear()
         self.cars.clear()

@@ -19,7 +19,7 @@ class Snake:
 
     def bite_itself(self):
         for segment in self.body[1:]:
-            if self.head.distance(segment) < utils.SQUARE_SIZE/2:
+            if self.head.distance(segment) < utils.SQUARE_SIZE / 2:
                 return True
         return False
 
@@ -45,3 +45,13 @@ class Snake:
 
     def positions(self):
         return [elem.pos() for elem in self.body]
+
+    def reset(self):
+        for segment in self.body:
+            segment.hideturtle()
+        self.body.clear()
+
+        snake = Snake()
+        self.head = snake.head
+        self.body = snake.body
+
