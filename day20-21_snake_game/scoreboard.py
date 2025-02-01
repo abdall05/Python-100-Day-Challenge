@@ -6,15 +6,6 @@ FONT = ("Arial", 15, "bold")
 SCORE_FILE = "score.txt"
 
 
-def read_score(file=SCORE_FILE):
-    with open(file, "r") as file:
-        try:
-            score = int(file.readline())
-            return score
-        except:
-            return 0
-
-
 class Scoreboard(Turtle):
     def __init__(self):
         super().__init__()
