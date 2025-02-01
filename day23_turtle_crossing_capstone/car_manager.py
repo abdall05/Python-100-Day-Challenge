@@ -6,7 +6,7 @@ from collections import deque
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 STARTING_MOVE_DISTANCE = 5
-MOVE_INCREMENT = 10
+MOVE_INCREMENT = 1
 
 DEFAULT_SIZE = 20
 STRETCH_WIDTH = 1
@@ -17,7 +17,8 @@ CAR_START_LINE = SCREEN_WIDTH // 2
 OFFSET = 70
 CAR_MIN_Y = -240
 CAR_MAX_Y = 240
-ROW_DISTANCE = 40
+ROW_DISTANCE = 60
+
 
 
 # creates a new car on position (SCREEN_WIDTH/2,y)
@@ -47,35 +48,49 @@ class Car(Turtle):
         self.shapesize(stretch_wid=STRETCH_WIDTH, stretch_len=STRETCH_LENGTH)
         self.penup()
         self.goto(position)
-        self.speed = STARTING_MOVE_DISTANCE
 
-    def boost_speed(self):
-        self.speed += MOVE_INCREMENT
-
-    def move(self):
-        self.forward(self.speed)
+    def move(self, speed):
+        self.forward(speed)
 
 
 class CarManager:
     def __init__(self):
-        self.cars = {}
-        for y in range(CAR_MIN_Y, CAR_MAX_Y + 1, ROW_DISTANCE):
-            self.cars[y] = random_row_of_cars(y)
+        self.speed = STARTING_MOVE_DISTANCE
+        self.cars = []
+        self.generate_cars()
 
     def move_cars(self):
         for row in self.cars:
-            cars = self.cars[row]
-            for car in cars:
-                car.move()
+            for car in row:
+                car.move(self.speed)
                 if car.xcor() < -SCREEN_WIDTH // 2:
                     car.goto(SCREEN_WIDTH // 2, car.ycor())
 
+    def boost_speed(self):
+        self.speed += MOVE_INCREMENT
+
     def check_collision(self, player):
         for row in self.cars:
-            cars = self.cars[row]
-            for car in cars:
-                if abs(player.ycor() - car.ycor()) <= PLAYER_SIZE / 2 + DEFAULT_SIZE / 2 and (
+            for car in row:
+                if abs(player.ycor() - car.ycor()) <= PLAYER_SIZE / 2 + DEFAULT_SIZE / 2  and (
                         car.xcor() - CAR_WIDTH / 2 < player.xcor() - DEFAULT_SIZE / 2 < car.xcor() + CAR_WIDTH / 2 or
                         car.xcor() - CAR_WIDTH / 2 < player.xcor() + DEFAULT_SIZE / 2 < car.xcor() + CAR_WIDTH / 2):
                     return True
         return False
+
+    def level_up(self):
+        self.clear_cars()
+        self.generate_cars()
+        self.boost_speed()
+
+    def generate_cars(self):
+        self.cars.clear()
+        for y in range(CAR_MIN_Y, CAR_MAX_Y + 1, ROW_DISTANCE):
+            self.cars.append(random_row_of_cars(y))
+
+    def clear_cars(self):
+        """Remove all car objects and prepare for a new level."""
+        for row in self.cars:
+            for car in self.cars[row]:
+                car.hideturtle()
+        self.cars.clear()
