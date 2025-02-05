@@ -1,5 +1,6 @@
 import time
 import tkinter
+from setup_window import create_setup_window
 
 IMAGE_HEIGHT = 224
 IMAGE_WIDTH = 200
@@ -9,9 +10,6 @@ GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
 FONT = (FONT_NAME, 32, "bold")
-WORK_MIN = 1
-SHORT_BREAK_MIN = 1
-LONG_BREAK_MIN = 1
 iteration = 1
 pause = True
 reset = False
@@ -130,21 +128,22 @@ def countdown(minutes, seconds=0):
         minutes, seconds = divmod(total_seconds, 60)
         time_left = format_time(minutes, seconds)
         canvas.itemconfig(timer_text, text=time_left)
-        window.update_idletasks()
         window.update()
 
-        time.sleep(0.1)
+        time.sleep(1)
 
         total_seconds -= 1
     if total_seconds < 0:
         finished_countdown = True
 
 
+WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN = create_setup_window()
+
 window = tkinter.Tk()
 window.title("Pomodoro")
 window.config(bg=YELLOW, padx=50, pady=50)
 
-label = tkinter.Label(text="Timer", bg=YELLOW, fg=GREEN, font=FONT,width=15)
+label = tkinter.Label(text="Timer", bg=YELLOW, fg=GREEN, font=FONT, width=15)
 label.pack()
 
 image = tkinter.PhotoImage(file="tomato.png")
