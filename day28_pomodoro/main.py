@@ -42,11 +42,13 @@ def reset_pomodoro():
 
 
 def clean_after_reset():
-    global iteration
+    global iteration,reset,pause
     clear_check_marks()
     canvas.itemconfig(timer_text, text=format_time(WORK_MIN))
     label.config(text="Timer", fg=GREEN)
     start_pause_button.config(text='Start')
+    reset = False
+    pause = True
 
     iteration = 1
 
@@ -117,8 +119,7 @@ def start_pomodoro_cycles(current_minutes, current_seconds):
 
     if reset:
         clean_after_reset()
-        reset = False
-        pause = True
+
 
 
 def countdown(minutes, seconds=0):
