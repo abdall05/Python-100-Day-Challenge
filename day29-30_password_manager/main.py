@@ -20,7 +20,10 @@ def search():
             with open("data.json", "r") as file:
                 data = json.load(file)
         except:
-                data = {}
+            data = {}
+            with open("data.json", "w") as file:
+                json.dump(data, file)
+
 
         found = False
         for key, value in data.items():
