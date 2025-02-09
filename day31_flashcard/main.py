@@ -13,25 +13,37 @@ FONT1 = ("Ariel", 40, "italic")
 FONT2 = ("Ariel", 60, "bold")
 COUNTDOWN = 3000
 future_function_id = None
+current_word_index = None
 
 words_manager = WordsManager()
 
 
+def on_close():
+    words_manager.save_data()
+    window.destroy()
+
 
 def flip_card(word_to_reveal):
     flash_card.itemconfig(flash_card_image, image=card_back_image)
-    flash_card.itemconfig(text1, text="English",fill="white")
-    flash_card.itemconfig(text2, text=word_to_reveal,fill="white")
+    flash_card.itemconfig(text1, text="Explanation", fill="white")
+    flash_card.itemconfig(text2, text=word_to_reveal, fill="white")
+
+
+def recognised_word():
+    global current_word_index
+    words_manager.update_weight(current_word_index)
+    show_card()
 
 
 def show_card():
-    global future_function_id
+    global future_function_id, current_word_index
     if future_function_id:
         window.after_cancel(future_function_id)
     flash_card.itemconfig(flash_card_image, image=card_front_image)
-    word_pair = words_manager.next_word_pair()
-    flash_card.itemconfig(text1, text="French",fill="black")
-    flash_card.itemconfig(text2, text=word_pair[0],fill="black")
+    current_word_index = words_manager.next_word_index()
+    word_pair = words_manager.next_word(current_word_index)
+    flash_card.itemconfig(text1, text="French", fill="black")
+    flash_card.itemconfig(text2, text=word_pair[0], fill="black")
     future_function_id = window.after(COUNTDOWN, flip_card, word_pair[1])
 
 
@@ -56,8 +68,10 @@ wrong_button = tkinter.Button(window, image=wrong_image, command=show_card)
 wrong_button.grid(row=1, column=0)
 
 right_image = tkinter.PhotoImage(file="images/right.png")
-right_button = tkinter.Button(window, image=right_image, command=show_card)
+right_button = tkinter.Button(window, image=right_image, command=recognised_word)
 right_button.grid(row=1, column=1)
+
+window.protocol("WM_DELETE_WINDOW", on_close)
 
 show_card()
 

@@ -1,26 +1,50 @@
 import pandas
 import random
 
-DATA_PATH = "data/french_words.csv"
+DATA_PATH = "data/word_list.csv"
 
 
-def load_data():
-
+def add_weights():
     df = pandas.read_csv(DATA_PATH)
-    list_of_words = [[row["French"], row["English"]] for _, row in df.iterrows()]
-    random.shuffle(list_of_words)
-    return list_of_words
+    if 'Weight' not in df.columns:
+        df['Weight'] = 1
+        df.to_csv(DATA_PATH, index=False)
+
+
+add_weights()
 
 
 class WordsManager:
     def __init__(self):
-        self.words = load_data()
-        self.words_count = len(self.words)
-        self.index = 0
+        self.indices = None
+        self.expressions = None
+        self.explanations = None
+        self.weights = None
+        self.load_data()
 
-    def next_word_pair(self):
-        word = self.words[self.index]
-        self.index = (self.index + 1) % self.words_count
-        return word
+    def load_data(self):
+        df = pandas.read_csv(DATA_PATH)
+        self.indices = df.index
+        self.expressions = df.Expression
+        self.explanations = df.Explanation
+        self.weights = df.Weight
+        self.weights = self.weights.astype(float)
 
+    def update_weight(self, word_index):
+        self.weights[word_index] = 1 / ((1 / self.weights[word_index]) + 1)
+
+    def next_word_index(self):
+        return random.choices(self.indices, weights=self.weights)[0]
+
+    def next_word(self, word_index):
+        return self.expressions[word_index], self.explanations[word_index]
+
+    def save_data(self):
+        data = {
+            'Expression': self.expressions,
+            'Explanation': self.explanations,
+            'Weights': self.weights,
+        }
+        df_to_save = pandas.DataFrame(data)
+        df_to_save.to_csv(DATA_PATH, index=False)
 
