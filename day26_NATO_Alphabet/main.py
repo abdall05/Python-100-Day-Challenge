@@ -10,11 +10,17 @@ def get_phonetic_mapping():
 
 def get_word_spelling(word_to_spell, phonetic_mapping_dict):
     spell_word = word_to_spell.strip().upper()
-    return [phonetic_mapping[letter] for letter in spell_word if letter in phonetic_mapping_dict]
+    return [phonetic_mapping[letter] for letter in spell_word]
 
 
 if __name__ == "__main__":
     phonetic_mapping = get_phonetic_mapping()
-    word = input("Enter a word: ")
-    phonetic_word = get_word_spelling(word, phonetic_mapping)
+    phonetic_word = None
+    while phonetic_word is None:
+        word = input("Enter a word: ")
+        try:
+            phonetic_word = get_word_spelling(word, phonetic_mapping)
+        except KeyError:
+            print("Sorry, only letters in the alphabet please.")
+
     print(phonetic_word)
