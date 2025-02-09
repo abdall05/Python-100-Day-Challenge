@@ -19,25 +19,20 @@ def search():
         try:
             with open("data.json", "r") as file:
                 data = json.load(file)
-        except FileNotFoundError:
-                data={}
+        except:
+                data = {}
+
         found = False
         for key, value in data.items():
             if search_key.upper() == key.upper():
                 found = True
                 username = value["username"]
                 password = value["password"]
+                pyperclip.copy(password)
                 tkinter.messagebox.showinfo(title=f"{key}", message=f"Email: {username}\nPassword: {password}")
                 break
         if not found:
             tkinter.messagebox.showinfo(title="Oops", message="Website not found")
-
-
-
-
-
-
-
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -67,7 +62,7 @@ def save_data():
                 with open(DATA_FILE_PATH, "r") as f:
                     data = json.load(f)
                     data.update(new_data)
-            except FileNotFoundError:
+            except:
                 data = new_data
             with open(DATA_FILE_PATH, "w") as f:
                 json.dump(data, f, indent=4)
