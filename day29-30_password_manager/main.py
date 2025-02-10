@@ -24,14 +24,16 @@ def search():
             with open("data.json", "w") as file:
                 json.dump(data, file)
 
-
         found = False
         for key, value in data.items():
             if search_key.upper() == key.upper():
                 found = True
                 username = value["username"]
                 password = value["password"]
-                pyperclip.copy(password)
+                try:
+                    pyperclip.copy(password)
+                except:
+                    pass
                 tkinter.messagebox.showinfo(title=f"{key}", message=f"Email: {username}\nPassword: {password}")
                 break
         if not found:
@@ -42,7 +44,10 @@ def search():
 
 def generate_password():
     password = password_generator.generate()
-    pyperclip.copy(password)
+    try:
+        pyperclip.copy(password)
+    except:
+        pass
     password_entry.delete(0, tkinter.END)
     password_entry.insert(0, password)
 
