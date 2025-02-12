@@ -5,7 +5,7 @@ from sms_sender import send_sms
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 API_URL = 'https://api.openweathermap.org/data/2.5/forecast'
 CITY = "passau"
-LATITUDE = 48.5665
+LATITUDE = 48.56651
 LONGITUDE = 13.43122
 COUNT = 5  # number of timestamps (each 3 hour from now)
 
@@ -40,6 +40,7 @@ def need_umbrella(weather_ids):
             return True
     return False
 
+
 if __name__ == "__main__":
     try:
         data = get_weather_data()
@@ -47,5 +48,6 @@ if __name__ == "__main__":
         data = {}
         print(e)
     weather_id_list = extract_weather_ids(data)
-    if  need_umbrella(weather_id_list):
+    if need_umbrella(weather_id_list):
+        print("yes")
         send_sms()
